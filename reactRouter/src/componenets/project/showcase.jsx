@@ -6,7 +6,7 @@ const Showcase = ({ data, transition }) => {
   return (
     <>
       {data.map((project) => (
-        <div class="w-60 max-w-sm bg-black border border-gray-800 rounded-lg shadow dark:bg-white dark:border-gray-700 ">
+        <div class="w-60 mb-4 mx-4 max-w-sm bg-black border border-gray-800 rounded-lg shadow dark:bg-white dark:border-gray-700 ">
           <a href="#">
             <img
               class="p-4 h-40 w-60 rounded-t-lg"

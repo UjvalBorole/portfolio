@@ -123,13 +123,13 @@ const Project = () => {
     return (
         <div className="container-xl md:mx-auto mb-5 "> 
         <br />
-        <h2 className="text-2xl text-gray-900 font-bold md:text-4xl flex justify-center items-center">
+        <h2 className="text-2xl text-gray-900 font-bold md:text-4xl flex justify-center items-center ">
                              Projects
                         </h2>
-          <div class="flex items-center justify-center py-4 md:py-8 flex-wrap">
+          <div class="flex items-center justify-center py-4 md:py-8 flex-wrap mx-12">
             <Filters filterProjects={(tag) => filterProjects(tag)} />
           </div>
-          <div class="container ml-10 md:flex md:flex-wrap md:gap-5 grid grid-cols-1 gap-2 w-50 h-50">
+          <div class="container flex items-center justify-center py-5 md:py-8 flex-wrap mx-auto">
             <Showcase
                         data={projects}
                         transition={transition}

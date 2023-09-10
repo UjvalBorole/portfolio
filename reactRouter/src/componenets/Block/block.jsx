@@ -38,7 +38,7 @@ const Block = () => {
     {/* <span className="text-4xl font-bold flex justify-center item-center">Blogs</span> <br /> */}
       <div class="flex flex-wrap mx-10 ">
     {projectsData.map((item)=>(
-        <div class="max-w-sm bg-black border border-gray-900 rounded-lg shadow dark:bg-white dark:border-gray-800 mb-5 mr-5">
+        <div class="max-w-sm bg-black border border-gray-900 rounded-lg shadow dark:bg-white dark:border-gray-800 mb-5 mx-2">
           <a href="#">
             <img
               class="rounded-t-lg max-h-80 w-full "
