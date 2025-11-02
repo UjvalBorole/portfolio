@@ -1,4 +1,3 @@
-import { send } from "emailjs-com";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,10 +11,10 @@ export default function Contact() {
     reset,
   } = useForm();
 
-  const [isSending, setIsSending] = useState(false); // ⏳ loading state
+  const [isSending, setIsSending] = useState(false);
 
   const onSubmit = async (data) => {
-    setIsSending(true); // start loading
+    setIsSending(true);
     toast.info("⏳ Sending your message...", {
       position: "top-center",
       autoClose: 1500,
@@ -23,19 +22,14 @@ export default function Contact() {
     });
 
     try {
-      const resp = await Promise.race([
-        send(
-          import.meta.env.VITE_EMAILJS_SERVICE_ID,
-          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-          data,
-          import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-        ),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("timeout")), 12000)
-        ), // 12 sec timeout
-      ]);
+      const resp = await fetch("/.netlify/functions/sendEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-      console.log("Success", resp.status, resp.text);
+      if (!resp.ok) throw new Error("Failed to send message");
+
       toast.success("✅ Thanks for submitting your query!", {
         position: "top-center",
         autoClose: 2500,
@@ -43,12 +37,12 @@ export default function Contact() {
       reset();
     } catch (err) {
       console.error("Error sending message:", err);
-      toast.error("❌ Failed to send message. Please try again.", {
+      toast.error("❌ Failed to send message. Please try again later.", {
         position: "top-center",
         autoClose: 3000,
       });
     } finally {
-      setIsSending(false); // stop loading
+      setIsSending(false);
     }
   };
 

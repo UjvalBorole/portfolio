@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import Showcase from "./showcase.jsx";
 import { useNavigate } from "react-router-dom";
 
-// your GitHub info
 const GITHUB_USERNAME = "UjvalBorole";
-const YOUR_GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN; // stored securely in .env
 
 export default function Project({ showAll = false }) {
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRepos = async () => {
@@ -18,50 +16,29 @@ export default function Project({ showAll = false }) {
         let response;
 
         if (showAll) {
-          // all repos
+          // ✅ Fetch all public repositories directly from GitHub
           response = await fetch(
             `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`
           );
           const data = await response.json();
-          setRepos(
-            data.map((repo) => ({
-              name: repo.name,
-              desc: repo.description,
-              link: repo.html_url,
-              skills: repo.language || "N/A",
-            }))
-          );
-        } else {
-          // pinned repos via GraphQL
-          response = await fetch("https://api.github.com/graphql", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${YOUR_GITHUB_TOKEN}`,
-            },
-            body: JSON.stringify({
-              query: `
-                {
-                  user(login: "${GITHUB_USERNAME}") {
-                    pinnedItems(first: 6, types: REPOSITORY) {
-                      nodes {
-                        ... on Repository {
-                          name
-                          description
-                          url
-                          languages(first: 3) {
-                            nodes { name }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              `,
-            }),
-          });
 
+          if (Array.isArray(data)) {
+            setRepos(
+              data.map((repo) => ({
+                name: repo.name,
+                desc: repo.description,
+                link: repo.html_url,
+                skills: repo.language || "N/A",
+              }))
+            );
+          } else {
+            throw new Error("Unexpected data format from GitHub REST API");
+          }
+        } else {
+          // ✅ Fetch pinned repos securely via Netlify Function
+          response = await fetch("/.netlify/functions/github");
           const result = await response.json();
+
           const pinned = result?.data?.user?.pinnedItems?.nodes || [];
           setRepos(
             pinned.map((repo) => ({
@@ -73,8 +50,8 @@ export default function Project({ showAll = false }) {
           );
         }
       } catch (err) {
-        console.error(err);
-        setError("Failed to load repositories.");
+        console.error("Error fetching repositories:", err);
+        setError("Failed to load repositories. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -84,7 +61,7 @@ export default function Project({ showAll = false }) {
   }, [showAll]);
 
   return (
-    <div className="container-xl md:mx-auto mb-10">
+    <div className="container-xl md:mx-auto mb-10 px-4">
       <h2
         className="text-3xl text-gray-900 font-bold md:text-4xl flex justify-center items-center my-8 cursor-pointer hover:text-orange-700 transition"
         onClick={() => navigate("/project")}
@@ -93,7 +70,9 @@ export default function Project({ showAll = false }) {
       </h2>
 
       {loading ? (
-        <p className="text-center text-gray-600 mt-6">Loading projects...</p>
+        <p className="text-center text-gray-600 mt-6 animate-pulse">
+          Loading projects...
+        </p>
       ) : error ? (
         <p className="text-center text-red-600 mt-6">{error}</p>
       ) : (
