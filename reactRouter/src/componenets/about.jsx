@@ -3,7 +3,7 @@ import Techpng from "../source/tech-icons.png";
 
 export default function About() {
   return (
-    <div className="py-12 bg-gray-50">
+    <div className="py-12 ">
       <div className="container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
         <div className="space-y-6 md:space-y-0 md:flex md:gap-10 lg:items-center lg:gap-16">
           
@@ -31,7 +31,10 @@ export default function About() {
                 <strong>Design and implement:</strong> resilient microservices with Spring Boot
               </li>
               <li>
-                <strong>Event-driven architecture:</strong> stream processing with Kafka
+                <strong>Event-driven architecture:</strong> stream processing with Kafka and RabbitMQ
+              </li>
+              <li>
+                <strong>Caching and performance:</strong> in-memory acceleration using Redis
               </li>
               <li>
                 <strong>Containerization & orchestration:</strong> Docker, Kubernetes

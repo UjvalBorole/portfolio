@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Showcase from "./showcase.jsx";
+import { useNavigate } from "react-router-dom";
 
 // your GitHub info
 const GITHUB_USERNAME = "UjvalBorole";
@@ -9,6 +10,7 @@ export default function Project({ showAll = false }) {
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRepos = async () => {
@@ -85,7 +87,7 @@ export default function Project({ showAll = false }) {
     <div className="container-xl md:mx-auto mb-10">
       <h2
         className="text-3xl text-gray-900 font-bold md:text-4xl flex justify-center items-center my-8 cursor-pointer hover:text-orange-700 transition"
-        onClick={() => (window.location.href = "/project")}
+        onClick={() => navigate("/project")}
       >
         Projects
       </h2>

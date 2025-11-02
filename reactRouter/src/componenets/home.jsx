@@ -12,8 +12,8 @@ import Hero2 from "../source/hero2.png";
 
 export default function Home() {
   return (
-    <>
-      <div className="mx-auto w-full max-w-7xl">
+    <div className="bg-gray-50">
+      <div className=" mx-auto w-full max-w-7xl">
         {/* HERO SECTION */}
         <aside className="relative overflow-hidden text-black rounded-lg sm:mx-16 mx-2 sm:py-16">
           {/* Image comes first on mobile, text on right for desktop */}
@@ -70,6 +70,6 @@ export default function Home() {
       <Project showAll={false} />
       <Block />
       <Contact />
-    </>
+    </div>
   );
 }
