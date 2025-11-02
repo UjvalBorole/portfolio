@@ -1,145 +1,102 @@
-import React, { useState } from "react";
-import Filters from "./filter";
-import Showcase from "./showcase";
-import app from "../../source/app.png"
-import head from "../../source/head.jpg"
-import ecom from "../../source/ecom.png"
-import fas from "../../source/fas.png"
-import news from "../../source/news.jpg"
-import opfd from "../../source/opfd.png"
-import textutil from "../../source/textutil.png"
-import assis from "../../source/assis.jpeg"
+import React, { useEffect, useState } from "react";
+import Showcase from "./Showcase";
 
+// your GitHub info
+const GITHUB_USERNAME = "UjvalBorole";
+const YOUR_GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN; // stored securely in .env
 
+export default function Project({ showAll = false }) {
+  const [repos, setRepos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
+  useEffect(() => {
+    const fetchRepos = async () => {
+      try {
+        let response;
 
-const projectsData = [
-    {
-        id: 1,
-        name: "Online Payment Fraud Detection System",
-        link: "https://github.com/UjvalBorole/OPFDS",
-        skills:"django,ML",
-        tags: ["web-app","ml"],
-        media: {
-            thumbnail: opfd,
-        },
-    },
-    {
-        id: 2,
-        name: "ToMany-Ecommerce Application",
-        link: "https://github.com/UjvalBorole/Tomany",
-        skills:"Flutter,Django",
-        tags: ["mobile-app","mobile-app"],
-        media: {
-            thumbnail: app,
-        },
-    },
-    {
-        id: 3,
-        name: "Voice Assistant Bot",
-        link: "https://github.com/UjvalBorole/voice-asistant-using-chatgpt",
-        skills:"Flutter,Chatgpt",
-        tags: ["web-page","ml","mobile-app"],
-        media: {
-            thumbnail: assis,
-        },
-    },
-    {
-        id: 4,
-        name: "Fingerprint Authentication System",
-        link: "https://github.com/UjvalBorole/Fingerprint-Authentication-System",
-        skills:"ML,Django",
-        tags: ["web-app","ml"],
-        media: {
-            thumbnail: fas,
-        },
-    },
-    {
-        id: 5,
-        name: "To-Many-Ecommerce site",
-        link: "https://github.com/UjvalBorole/To-Many",
-        skills:"Django,Frontend Tech",
-        tags: ["web-app"],
-        media: {
-            thumbnail: ecom,
-        },
-    },
-    {
-        id: 6,
-        name: "News web App",
-        link: "https://github.com/UjvalBorole/news/tree/main/currentNews",
-        skills:"PHP,MYSQL,Other Tech",
-        tags: ["product", "web-app",],
-        media: {
-            thumbnail: news,
-        },
-    },
-    {
-        id: 7,
-        name: "HeadNews",
-        link: "https://github.com/UjvalBorole/HeadNews",
-        skills:"React,NewsAPI",
-        tags: ["web-app"],
-        media: {
-            thumbnail: head,
-        },
-    },
-    {
-        id: 8,
-        name: "TextUtils - Analyzing Your Text",
-        link: "https://github.com/UjvalBorole/TextUtil-Analyzing-Your-Text",
-        skills:"React,Node,  Express",
-        tags: ["web-app", "web-page"],
-        media: {
-            thumbnail: textutil,
-        },
-    },
-];
+        if (showAll) {
+          // all repos
+          response = await fetch(
+            `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`
+          );
+          const data = await response.json();
+          setRepos(
+            data.map((repo) => ({
+              name: repo.name,
+              desc: repo.description,
+              link: repo.html_url,
+              skills: repo.language || "N/A",
+            }))
+          );
+        } else {
+          // pinned repos via GraphQL
+          response = await fetch("https://api.github.com/graphql", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${YOUR_GITHUB_TOKEN}`,
+            },
+            body: JSON.stringify({
+              query: `
+                {
+                  user(login: "${GITHUB_USERNAME}") {
+                    pinnedItems(first: 6, types: REPOSITORY) {
+                      nodes {
+                        ... on Repository {
+                          name
+                          description
+                          url
+                          languages(first: 3) {
+                            nodes { name }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              `,
+            }),
+          });
 
-const Project = () => {
-    const [projects, setProjects] = useState(projectsData);
-    const [transition, setTransition] = useState(false);
-
-    const filterProjects = (tag) => {
-        setTransition("zoomout");
-
-        setTimeout(() => {
-            if (tag !== "all") {
-                const filteredProjects = projectsData.filter((f) =>
-                    f.tags.includes(tag)
-                );
-                setProjects(filteredProjects);
-            } else {
-                setProjects(projectsData);
-            }
-            setTransition("zoomin");
-        }, 200);
-
-        setTimeout(() => {
-            setTransition(false);
-        }, 600);
+          const result = await response.json();
+          const pinned = result?.data?.user?.pinnedItems?.nodes || [];
+          setRepos(
+            pinned.map((repo) => ({
+              name: repo.name,
+              desc: repo.description,
+              link: repo.url,
+              skills: repo.languages.nodes.map((l) => l.name).join(", "),
+            }))
+          );
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load repositories.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    return (
-        <div className="container-xl md:mx-auto mb-5 "> 
-        <br />
-        <h2 className="text-2xl text-gray-900 font-bold md:text-4xl flex justify-center items-center ">
-                             Projects
-                        </h2>
-          <div class="flex items-center justify-center py-4 md:py-8 flex-wrap mx-12">
-            <Filters filterProjects={(tag) => filterProjects(tag)} />
-          </div>
-          <div class="container flex items-center justify-center py-5 md:py-8 flex-wrap mx-auto">
-            <Showcase
-                        data={projects}
-                        transition={transition}
-                    />
-          </div>
-          <br />
-         </div>
-        
-      );
-};
+    fetchRepos();
+  }, [showAll]);
 
+  return (
+    <div className="container-xl md:mx-auto mb-10">
+      <h2
+        className="text-3xl text-gray-900 font-bold md:text-4xl flex justify-center items-center my-8 cursor-pointer hover:text-orange-700 transition"
+        onClick={() => (window.location.href = "/project")}
+      >
+        Projects
+      </h2>
 
-export default Project;
+      {loading ? (
+        <p className="text-center text-gray-600 mt-6">Loading projects...</p>
+      ) : error ? (
+        <p className="text-center text-red-600 mt-6">{error}</p>
+      ) : (
+        <Showcase data={repos} />
+      )}
+    </div>
+  );
+}

@@ -1,92 +1,111 @@
 import React from "react";
-import paper from "../../source/paper.jpeg"
 import { Link } from "react-router-dom";
-import sih from "../../source/sih.jpeg"
-import intern from "../../source/intern.jpeg"
-import paper1 from "../../source/fin_irjmets1683168276.pdf"
-import intern1 from "../../source/intern.pdf"
-import sih1 from "../../source/TK1052.pdf"
-
+import paper from "../../source/paper.jpeg";
+import sih from "../../source/sih.jpeg";
+import intern from "../../source/intern.jpeg";
+import paper1 from "../../source/fin_irjmets1683168276.pdf";
+import intern1 from "../../source/intern.pdf";
+import sih1 from "../../source/TK1052.pdf";
+import demoVideo from "../../source/sih23.mp4"; // 👈 your video file
 
 const projectsData = [
   {
-   name:"Published the Research Paper on Fingerprint Authentication System." ,
-   detail:"A fingerprint authentication system is essential for identifying users whose fingerprint images have been altered or damaged due to various reasons. Alterations to fingerprints can occur due to injuries, age, or other factors, making raditional fingerprint recognition systems less accurate.",
-   href:paper,
-   wd:paper1,
+    name: "Published the Research Paper on Fingerprint Authentication System",
+    detail:
+      "A fingerprint authentication system identifies users whose fingerprints may be altered or damaged due to injuries or aging — ensuring secure, consistent verification with high accuracy.",
+    href: paper,
+    wd: paper1,
   },
   {
-    name:"Smart India Hackathon 2022" ,
-    detail:"  Our project, the Hospital Bed Management System, aims to optimize and streamline the process of bed allocation in hospitals, ensuring efficient resource management during times of high demand. By leveraging technology and data-driven algorithms, our solution can provide real-time updates on bed availability, helping healthcare providers make informed decisions and improve patient care.",
-    href:sih,
-    wd:sih1,
-   },
-   {
-    name:"Software Devlopment Intern - Aapliweb" ,
-    detail:"Successfully enhanced innovative module integration and modernized database restructuring.  Developed a PHP fertilizer sales app and transformed it into an Android application using cutting-edge Android tools.",
-    href:intern,
-    wd:intern1,
-   },
+    name: "Smart India Hackathon 2022",
+    detail:
+      "Built a Hospital Bed Management System to optimize bed allocation using real-time updates and smart data tracking, improving healthcare efficiency during peak demand.",
+    href: sih,
+    wd: sih1,
+  },
+  {
+    name: "Smart India Hackathon 2023 (Video Demo)",
+    detail:
+      "Developed a full-stack mental wellness app with mood tracking, guided therapies, and real-time chat. Watch the demo below.",
+    video: demoVideo, // 👈 video replaces image
+    wd: intern1,
+  },
 ];
-const Block = () => {
+
+export default function Block() {
   return (
-    
-    <div className="container-xl sm:ml-5 md:ml-12 pt-5 mt-12">
-      <h2 className="text-2xl text-gray-900 font-bold md:text-4xl flex justify-center items-center">
-                             Blogs
-                        </h2><br />
-    {/* <span className="text-4xl font-bold flex justify-center item-center">Blogs</span> <br /> */}
-      <div class="flex flex-wrap mx-10 ">
-    {projectsData.map((item)=>(
-        <div class="max-w-sm bg-black border border-gray-900 rounded-lg shadow dark:bg-white dark:border-gray-800 mb-5 mx-2">
-          <a href="#">
-            <img
-              class="rounded-t-lg max-h-80 w-full "
-              src={item.href}
-              alt=""
-            />
-          </a>
-          <hr />
-          
-          <div class="p-5">
-            <a href="#">
-              <h5 class="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-black">
-               {item.name}
-              </h5>
-            </a>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-600">
-            {item.detail}
-            </p>
-            <Link
-              to="/"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-orange-700 rounded-lg hover:bg-orange-800 focus:ring-4 focus:outline-none focus:ring-orange-300 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800"
-              onClick={()=>window.open(item.wd)}
+    <section className="py-8 bg-gray-50" id="blogs">
+      <div className="max-w-6xl mx-auto px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-14">
+          Blogs & Achievements
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          {projectsData.map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-500 overflow-hidden border border-gray-100"
             >
-              Read more
-              <svg
-                class="w-3.5 h-3.5 ml-2"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 10"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9"
-                />
-              </svg>
-            </Link>
-          </div>
+              {/* Media (Image or Video) */}
+              <div className="h-52 overflow-hidden">
+                {item.video ? (
+                  <video
+                    src={item.video}
+                    controls
+                    loop
+                    muted
+                    playsInline
+                    className="h-full w-full object-cover rounded-t-2xl"
+                  />
+                ) : (
+                  <img
+                    src={item.href}
+                    alt={item.name}
+                    className="h-full w-full object-cover hover:scale-105 transition-transform duration-700 rounded-t-2xl"
+                  />
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="p-6 flex flex-col justify-between h-[280px]">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-orange-700 transition-colors">
+                    {item.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
+                    {item.detail}
+                  </p>
+                </div>
+
+                {/* Read More Button */}
+                <div className="mt-4">
+                  <Link
+                    to="/"
+                    onClick={() => window.open(item.wd)}
+                    className="inline-flex items-center text-sm font-medium text-white bg-orange-700 hover:bg-orange-800 rounded-lg px-4 py-2 transition-all duration-300"
+                  >
+                    Read More
+                    <svg
+                      className="w-3.5 h-3.5 ml-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 14 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M1 5h12m0 0L9 1m4 4L9 9"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-
-))}
       </div>
-        
-    </div>
+    </section>
   );
-};
-
-export default Block;
+}

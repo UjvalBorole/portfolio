@@ -1,6 +1,6 @@
 import React from 'react'
 import { Menu, X } from 'lucide-react'
-import Logo from "../../source/ujvalborole.jpg"
+import Logo from "../../source/ujvalborole.png"
 
 import { NavLink, Link } from "react-router-dom";
 
