@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { defaultImages } from "./sampleImages";
+import { defaultImages } from "./sampleImages.js";
 
 const Showcase = ({ data }) => {
   const [current, setCurrent] = useState(0);

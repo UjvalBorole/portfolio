@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import About from "./about";
-import Contact from "./contact";
-import Project from "./project/project";
-import Block from "./Block/block";
+import About from "./about.jsx";
+import Contact from "./contact.jsx";
+import Project from "./project/project.jsx";
+import Block from "./Block/block.jsx";
+import Experience from "./Experience/experience.jsx";
 import { DownloadCloud } from "lucide-react";
 import Resume from "../Resume/UjvalBoroleResumes.pdf";
 import Hero from "../source/hero1.png";
 import Hero2 from "../source/hero2.png";
-import Experience from "./Experience/experience";
 
 export default function Home() {
   return (

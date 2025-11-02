@@ -6,11 +6,11 @@ import Layout from "./layout.jsx";
 import Home from "./componenets/home.jsx";
 import About from "./componenets/about.jsx";
 import Contact from "./componenets/contact.jsx";
-import User from "./componenets/User";
-import GitHub, { githubInfoLoader } from "./componenets/Github/github";
-import Project from "./componenets/project/project";
-import Block from "./componenets/Block/block";
-// import Project from "./componenets/project/or";
+import User from "./componenets/User.jsx";
+import GitHub, { githubInfoLoader } from "./componenets/Github/github.jsx";
+import Project from "./componenets/project/project.jsx";
+import Block from "./componenets/Block/block.jsx";
+// import Project from "./componenets/project/or.jsx";
 
 
 

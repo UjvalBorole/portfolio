@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Showcase from "./Showcase";
+import Showcase from "./showcase.jsx";
 
 // your GitHub info
 const GITHUB_USERNAME = "UjvalBorole";
